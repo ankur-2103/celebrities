@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import rawData from '../assets/celebrities.json';
 import Search from '../assets/search.svg';
 import Accordion from './Accordion';
@@ -24,6 +24,7 @@ const AccordionList = () => {
     const [deleteDialog, setDeleteDialog] = useState<boolean>(false);
     const [deleteItemId, setDeleteItemId] = useState<number>(0);
     const [search, setSearch] = useState<string>('');
+    const ref = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
         const filterData = () => {
@@ -65,6 +66,11 @@ const AccordionList = () => {
             }
         })
         setOpen(newArr);
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            ref.current?.scrollTo(0, 80 * index);
+        } else {
+            ref.current?.scrollTo(0, 65 * index);
+        }
     }
 
     const handleUpdate = (index:number, newData:Data) => {
@@ -84,7 +90,7 @@ const AccordionList = () => {
                 <img src={Search}/>
                 <input placeholder='Search' className='w-full outline-0' onChange={(e)=>setSearch(e.target.value)}/>
             </span>
-            <span className='flex flex-1 flex-col overflow-auto gap-4 w-full md:w-fit items-center m-2 p-2 h-[100%]'>
+            <span className='flex flex-1 flex-col scroll-smooth overflow-auto gap-4 w-full md:w-fit items-center m-2 p-2 h-[100%]' ref={ref}>
                 {data.map((item, index) => <Accordion key={item.id} open={open[index]} handleOpen={handleOpen} index={index} item={item} handleEdit={handleEdit} handleUpdate={handleUpdate} handleDelete={handleDelete} />)}
             </span>
             <DeleteDialog isOpen={deleteDialog} handleDelete={deleteItem} close={()=>setDeleteDialog(false)} />
