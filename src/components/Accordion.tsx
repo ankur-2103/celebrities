@@ -1,8 +1,11 @@
 import { Data } from "./AccordionList";
 import DownArrow from '../assets/down.svg'
 import { useEffect, useState } from "react";
-import { CheckOne, CloseOne, Delete, Pencil} from "@icon-park/react";
+import { CheckOne, CloseOne, Delete, Pencil } from "@icon-park/react";
 
+// This file is used to create accordion
+
+// Props for Accordion
 interface AccordionProps{
   item: Data,
   open: boolean,
@@ -13,6 +16,7 @@ interface AccordionProps{
   handleUpdate: (index:number, newData:Data) => void
 }
 
+// Accordion data interface
 interface itemData{
   name: string,
   age: number,
@@ -23,11 +27,13 @@ interface itemData{
 
 const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDelete, index }: AccordionProps) => {
   
+  // States for storing data
   const year = Math.floor((new Date().getTime() - new Date(item.dob.split('-').join()).getTime()) / 3.15576e+10);
   const [update, setUpdate] = useState<boolean>(false);
   const [save, setSave] = useState<boolean>(false);
   const [data, setData] = useState<itemData>({ name: item.first + " " + item.last, age: year, gender: item.gender, country: item.country, desc: item.description });
 
+  // Update values of item
   const updateItem = () => {
     if (data.name.length===0 || data.country.length === 0 || data.desc.length === 0 || data.gender.length === 0 || !data.age) {
       return
@@ -50,6 +56,7 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
     setSave(false);
   }
 
+  // Manage edit and save state
   useEffect(() => {
     const checkEditState = () => {
       handleEdit(update);
@@ -68,6 +75,7 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
     checkEditState();
   },[open, data, item, year, update])
   
+  // Cancel update 
   const cancelUpdate = () => {
     setUpdate(false);
     setData({
@@ -79,14 +87,18 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
     })
   }
 
+  // Custom react functional component for gender dropdown
   const GenderDropDown = () => {
+    // dropdown open state
     const [dropDown, setDropDown] = useState<boolean>(false);
 
+    // handle dropdown state
     const handleDropDown = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       setDropDown(!dropDown)
     }
 
+    // handle dropdown value change
     const handleChange = (val:string, e: React.MouseEvent<HTMLSpanElement>) => {
       e.stopPropagation();
       setData({...data, gender:val});
