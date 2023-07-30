@@ -136,12 +136,12 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
         <div className="flex justify-end gap-4">
           {update ?
             <>
-              <button disabled={!save} onClick={(e)=>{e.stopPropagation();updateItem();}} className=" outline-none"><CheckOne theme="outline" size="36" fill={save ? "#0cd002" : "#e8e8e8"} strokeLinecap="square"/></button>
+              <button disabled={!save} onClick={(e)=>{e.stopPropagation();updateItem();}} className={`outline-none ${save ? "cursor-pointer" : "cursor-not-allowed"}`}><CheckOne theme="outline" size="36" fill={save ? "#0cd002" : "#e8e8e8"} strokeLinecap="square"/></button>
               <button onClick={(e) => { e.stopPropagation(); cancelUpdate()}} className=" outline-none"><CloseOne theme="outline" size="36" fill="#d0021b" strokeLinecap="square"/></button>
             </> :
             <>
               <button onClick={(e) => { e.stopPropagation(); handleDelete(item.id)}} className=" outline-none"><Delete theme="outline" size="30" fill="#d0021b" strokeLinecap="square"/></button>
-              <button onClick={(e) => {e.stopPropagation();setUpdate(data.age > 18 && !update)}} className=" outline-none"><Pencil theme="outline" size="30" fill="#4a90e2" strokeLinecap="square"/></button>
+              <button onClick={(e) => {e.stopPropagation();setUpdate(data.age > 18 && !update)}} className={`outline-none ${data.age > 18 ? "cursor-pointer" : "cursor-not-allowed"}`}><Pencil theme="outline" size="30" fill={data.age > 18 ? "#4a90e2" : "#e8e8e8"} strokeLinecap="square"/></button>
             </>}
           </div>
         </div>
