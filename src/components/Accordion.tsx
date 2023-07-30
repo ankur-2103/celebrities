@@ -7,7 +7,7 @@ interface AccordionProps{
   item: Data,
   open: boolean,
   index: number,
-  handleOpen: (index:number) => void
+  handleOpen: (index:number,e:React.MouseEvent<HTMLDivElement>) => void
   handleEdit: (val:boolean) => void
   handleDelete: (id:number) => void
   handleUpdate: (index:number, newData:Data) => void
@@ -22,7 +22,7 @@ interface itemData{
 }
 
 const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDelete, index }: AccordionProps) => {
-
+  
   const year = Math.floor((new Date().getTime() - new Date(item.dob.split('-').join()).getTime()) / 3.15576e+10);
   const [update, setUpdate] = useState<boolean>(false);
   const [save, setSave] = useState<boolean>(false);
@@ -35,13 +35,14 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
     const nameArr = data.name.trim().split(' ');
     const firstName = nameArr[0];
     const lastName = nameArr[nameArr.length - 1]?.length ? nameArr[nameArr.length - 1] : "";
+    const newDate = new Date(new Date().getTime() - data.age * 3.15576e+10)
     const newData:Data = {
       ...item,
       first:firstName,
       last: lastName,
       gender: data.gender,
       country: data.country,
-      dob: new Date(new Date().getTime() - data.age * 3.15576e+10).toISOString(),
+      dob: newDate.getFullYear()+"-"+(newDate.getMonth()+1)+"-"+newDate.getDate(),
       description: data.desc
     }
     handleUpdate(index, newData);
@@ -57,6 +58,7 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
     const checkData = () => {
       if (data.name !== item.first + " " + item.last || data.age !== year || data.gender !== item.gender || data.country !== item.country || data.desc !== item.description) {
         setSave(true);
+        console.log()
       } else {
         setSave(false);
       }
@@ -96,12 +98,12 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
         <span className=" capitalize truncate">{data.gender}</span>
         <img src={DownArrow} />
         {dropDown && 
-          <div className="flex flex-col absolute top-8 z-10 bg-gray-100 right-0 w-full rounded-md truncate">
-            <span className="px-2 py-1 hover:bg-white rounded-md" onClick={(e)=>handleChange("male",e)}>Male</span>
-            <span className="px-2 py-1 hover:bg-white rounded-md" onClick={(e)=>handleChange("female",e)}>Female</span>
-            <span className="px-2 py-1 hover:bg-white rounded-md" onClick={(e)=>handleChange("transgender",e)}>Transgender</span>
-            <span className="px-2 py-1 hover:bg-white rounded-md" onClick={(e)=>handleChange("rather not say",e)}>Rather not say</span>
-            <span className="px-2 py-1 hover:bg-white rounded-md" onClick={(e)=>handleChange("other",e)}>Other</span>
+          <div className="flex flex-col absolute top-9 text-start z-10 bg-white right-0 w-full rounded-md break-words shadow-[0_10px_20px_0_rgba(0,0,0,0.55)]">
+            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'male' && "bg-slate-200"}`} onClick={(e)=>handleChange("male",e)}>Male</span>
+            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'female' && "bg-slate-200"}`} onClick={(e)=>handleChange("female",e)}>Female</span>
+            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'transgender' && "bg-slate-200"}`} onClick={(e)=>handleChange("transgender",e)}>Transgender</span>
+            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'rather not say' && "bg-slate-200"}`} onClick={(e)=>handleChange("rather not say",e)}>Rather not say</span>
+            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'other' && "bg-slate-200"}`} onClick={(e)=>handleChange("other",e)}>Other</span>
           </div>
         }
       </button>
@@ -109,7 +111,7 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
   }
 
   return (
-    <div className="flex flex-col ring-1 ring-gray-300 rounded-md px-4 py-2 w-full md:w-96 gap-2" onClick={()=>handleOpen(index)}>
+    <div className="flex flex-col ring-1 ring-gray-300 rounded-md px-4 py-2 w-full md:w-96 gap-2" onClick={(e)=>handleOpen(index,e)}>
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-6">
           <img className="w-14 h-14 md:w-20 md:h-20 ring-2 ring-gray-300  rounded-full" src={item.picture} />
@@ -122,7 +124,7 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
       <div className={`flex flex-col gap-2 ${open ? 'block' : 'hidden'}`}>
         <div className="flex gap-2">
           
-          <span className="flex flex-1 flex-col text-gray-400">Age<span className="text-black">{update ? <input value={data.age} type="number" placeholder="Country" onChange={(e) => setData({...data,age:parseInt(e.target.value)})} className={`w-full outline-none ring-1 ${!data.age ? "ring-red-500" : "ring-gray-300"} rounded-md px-2 py-1`} onClick={(e) => e.stopPropagation()} /> : data.age + " Years"}</span></span>
+          <span className="flex flex-1 flex-col text-gray-400">Age<span className="text-black">{update ? <input value={data.age} type="number" placeholder="Age" onChange={(e) => setData({...data,age:parseInt(e.target.value)})} className={`w-full outline-none ring-1 ${!data.age ? "ring-red-500" : "ring-gray-300"} rounded-md px-2 py-1`} onClick={(e) => e.stopPropagation()} /> : data.age + " Years"}</span></span>
           
           <span className="flex flex-1 flex-col text-gray-400">Gender<span className="text-black capitalize">{update ? <GenderDropDown /> : data.gender}</span></span>
           

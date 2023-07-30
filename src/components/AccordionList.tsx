@@ -44,11 +44,11 @@ const AccordionList = () => {
     const handleDelete = (id:number) => {
         setDeleteDialog(true);
         setDeleteItemId(id);
-        setOpen(Array(data.length-1).fill(false))
     }
-
+    
     const deleteItem = () => {
         setData(data.filter(item => item.id !== deleteItemId));
+        setOpen(Array(data.length-1).fill(false))
         setDeleteDialog(false);
         setDeleteItemId(0);
     }
