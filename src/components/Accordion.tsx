@@ -94,16 +94,16 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
     }
 
     return (
-      <button className="flex items-center outline-none w-full justify-between ring-1 ring-gray-300 rounded-md px-2 py-1 relative" onClick={handleDropDown}>
-        <span className=" capitalize truncate">{data.gender}</span>
+      <button className="flex flex-1 items-center outline-none w-full justify-between ring-1 ring-gray-300 rounded-md px-2 py-1 relative" onClick={handleDropDown}>
+        <span className="capitalize truncate overflow-hidden w-[75px] text-start">{data.gender}</span>
         <img src={DownArrow} />
         {dropDown && 
-          <div className="flex flex-col absolute top-9 text-start z-10 bg-white right-0 w-full rounded-md break-words shadow-[0_10px_20px_0_rgba(0,0,0,0.55)]">
-            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'male' && "bg-slate-200"}`} onClick={(e)=>handleChange("male",e)}>Male</span>
-            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'female' && "bg-slate-200"}`} onClick={(e)=>handleChange("female",e)}>Female</span>
-            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'transgender' && "bg-slate-200"}`} onClick={(e)=>handleChange("transgender",e)}>Transgender</span>
-            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'rather not say' && "bg-slate-200"}`} onClick={(e)=>handleChange("rather not say",e)}>Rather not say</span>
-            <span className={`px-2 py-1 hover:bg-white ${data.gender === 'other' && "bg-slate-200"}`} onClick={(e)=>handleChange("other",e)}>Other</span>
+          <div className="flex flex-col flex-1 absolute top-9 text-start z-10 bg-white right-0 w-full rounded-md break-words shadow-[0_10px_20px_0_rgba(0,0,0,0.55)]">
+            <span className={`flex-1 px-2 py-1 hover:bg-white ${data.gender === 'male' && "bg-slate-200"}`} onClick={(e)=>handleChange("male",e)}>Male</span>
+            <span className={`flex-1 px-2 py-1 hover:bg-white ${data.gender === 'female' && "bg-slate-200"}`} onClick={(e)=>handleChange("female",e)}>Female</span>
+            <span className={`flex-1 px-2 py-1 hover:bg-white ${data.gender === 'transgender' && "bg-slate-200"}`} onClick={(e)=>handleChange("transgender",e)}>Transgender</span>
+            <span className={`flex-1 px-2 py-1 hover:bg-white ${data.gender === 'rather not say' && "bg-slate-200"}`} onClick={(e)=>handleChange("rather not say",e)}>Rather not say</span>
+            <span className={`flex-1 px-2 py-1 hover:bg-white ${data.gender === 'other' && "bg-slate-200"}`} onClick={(e)=>handleChange("other",e)}>Other</span>
           </div>
         }
       </button>
@@ -126,7 +126,7 @@ const Accordion = ({ item, open, handleOpen, handleUpdate, handleEdit, handleDel
           
           <span className="flex flex-1 flex-col text-gray-400">Age<span className="text-black">{update ? <input value={data.age} type="number" placeholder="Age" onChange={(e) => setData({...data,age:parseInt(e.target.value)})} className={`w-full outline-none ring-1 ${!data.age ? "ring-red-500" : "ring-gray-300"} rounded-md px-2 py-1`} onClick={(e) => e.stopPropagation()} /> : data.age + " Years"}</span></span>
           
-          <span className="flex flex-1 flex-col text-gray-400">Gender<span className="text-black capitalize">{update ? <GenderDropDown /> : data.gender}</span></span>
+          <span className="flex flex-1 flex-col text-gray-400">Gender<span className="text-black capitalize break-words">{update ? <GenderDropDown /> : data.gender}</span></span>
           
           <span className="flex flex-1 flex-col text-gray-400">Country<span className="text-black">{update ? <input value={data.country} type="text"  placeholder="Country" onChange={(e) => setData({...data,country:e.target.value.replace(/[^a-z ]/gi, '')})} className={`w-full outline-none ring-1 ${data.country.length === 0 ? "ring-red-500" : "ring-gray-300"} rounded-md px-2 py-1`} onClick={(e) => e.stopPropagation()} /> : data.country}</span></span>
           
